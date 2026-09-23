@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Элементы решения/">
     <File Path="CEnemyTemplateList.cs" />
+    <File Path="EnemyIcon.cs" />
   </Folder>
   <Project Path="EnemyEditor/EnemyEditor.csproj" />
 </Solution>
