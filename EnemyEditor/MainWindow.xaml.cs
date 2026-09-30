@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
 namespace EnemyEditor
@@ -82,8 +83,8 @@ namespace EnemyEditor
         private void LoadIconsFromFolder(string path)
         {
             enemyIcons.Clear();
+            IconsListBox.Items.Clear();
 
-            // SearchOption.AllDirectories — искать .png и в подпапках
             string[] files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
 
             foreach (string file in files)
@@ -94,6 +95,14 @@ namespace EnemyEditor
                     ImagePath = file
                 };
                 enemyIcons.Add(icon);
+
+                Image image = new Image()
+                {
+                    Source = new BitmapImage(new Uri(icon.ImagePath)),
+                    Height = 64
+                };
+
+                IconsListBox.Items.Add(image);
             }
         }
 
