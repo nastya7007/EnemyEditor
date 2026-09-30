@@ -108,7 +108,18 @@ namespace EnemyEditor
 
         private void IconsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // позже
+            if (IconsListBox.SelectedItem is Image selectedImage)
+            {
+                // Показать большую иконку
+                MainEnemyIcon.Source = selectedImage.Source;
+
+                // Взять имя файла из пути
+                string fullPath = selectedImage.Source.ToString();
+                string iconName = System.IO.Path.GetFileName(fullPath);
+
+                // Записать имя иконки в поле
+                IconNameBox.Text = iconName;
+            }
         }
 
         // --- Вспомогательные ---
