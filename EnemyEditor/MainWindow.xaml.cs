@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,9 +30,10 @@ namespace EnemyEditor
                 string iconName = IconNameBox.Text;
                 int baseLife = int.Parse(BaseLifeBox.Text);
                 int baseGold = int.Parse(BaseGoldBox.Text);
-                double lifeModifier = double.Parse(LifeModifierBox.Text);
-                double goldModifier = double.Parse(GoldModifierBox.Text);
-                double spawnChance = double.Parse(SpawnChanceBox.Text);
+
+                double lifeModifier = double.Parse(LifeModifierBox.Text, CultureInfo.InvariantCulture);
+                double goldModifier = double.Parse(GoldModifierBox.Text, CultureInfo.InvariantCulture);
+                double spawnChance = double.Parse(SpawnChanceBox.Text, CultureInfo.InvariantCulture);
 
                 enemyList.AddEnemy(name, iconName, baseLife, lifeModifier,
                     baseGold, goldModifier, spawnChance);
@@ -51,19 +53,36 @@ namespace EnemyEditor
             {
                 enemyList.DeleteEnemyByIndex(EnemiesListBox.SelectedIndex);
                 UpdateEnemiesListBox();
+                ClearInputFields();
             }
         }
 
-        // --- Save / Load (заглушки) ---
+        // --- Save / Load ---
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // позже
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "JSON файлы (*.json)|*.json";
+            dialog.FileName = "enemies.json";
+
+            if (dialog.ShowDialog() == true)
+            {
+                enemyList.SaveToJson(dialog.FileName);
+                MessageBox.Show("Сохранено!");
+            }
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            // позже
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "JSON файлы (*.json)|*.json";
+
+            if (dialog.ShowDialog() == true)
+            {
+                enemyList.LoadFromJson(dialog.FileName);
+                UpdateEnemiesListBox();
+                MessageBox.Show("Загружено!");
+            }
         }
 
         // --- Иконки ---
@@ -110,15 +129,33 @@ namespace EnemyEditor
         {
             if (IconsListBox.SelectedItem is Image selectedImage)
             {
-                // Показать большую иконку
                 MainEnemyIcon.Source = selectedImage.Source;
 
-                // Взять имя файла из пути
                 string fullPath = selectedImage.Source.ToString();
                 string iconName = System.IO.Path.GetFileName(fullPath);
 
-                // Записать имя иконки в поле
                 IconNameBox.Text = iconName;
+            }
+        }
+
+        // --- Выбор врага в списке ---
+
+        private void EnemiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EnemiesListBox.SelectedIndex < 0)
+                return;
+
+            CEnemyTemplate enemy = enemyList.GetEnemyByIndex(EnemiesListBox.SelectedIndex);
+
+            if (enemy != null)
+            {
+                EnemyNameBox.Text = enemy.Name;
+                IconNameBox.Text = enemy.IconName;
+                BaseLifeBox.Text = enemy.BaseLife.ToString();
+                BaseGoldBox.Text = enemy.BaseGold.ToString();
+                LifeModifierBox.Text = enemy.LifeModifier.ToString(CultureInfo.InvariantCulture);
+                GoldModifierBox.Text = enemy.GoldModifier.ToString(CultureInfo.InvariantCulture);
+                SpawnChanceBox.Text = enemy.SpawnChance.ToString(CultureInfo.InvariantCulture);
             }
         }
 

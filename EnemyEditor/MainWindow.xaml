@@ -12,7 +12,8 @@
         <!-- ЛЕВАЯ КОЛОНКА: список врагов -->
         <StackPanel Grid.Column="0" Margin="10">
             <TextBlock Text="Список противников" FontWeight="Bold" Margin="0,0,0,5"/>
-            <ListBox Name="EnemiesListBox" Height="500"/>
+            <ListBox Name="EnemiesListBox" Height="500"
+                     SelectionChanged="EnemiesListBox_SelectionChanged"/>
         </StackPanel>
 
         <!-- ЦЕНТР: поля ввода и кнопки -->
