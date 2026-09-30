@@ -20,7 +20,7 @@ namespace EnemyEditor
             enemyList = new CEnemyTemplateList();
         }
 
-        // --- Add / Remove ---
+        //эд/ремув
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +57,7 @@ namespace EnemyEditor
             }
         }
 
-        // --- Save / Load ---
+        //сейф/лоад
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -85,7 +85,7 @@ namespace EnemyEditor
             }
         }
 
-        // --- Иконки ---
+        //Иконки
 
         private void LoadIconsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -138,7 +138,7 @@ namespace EnemyEditor
             }
         }
 
-        // --- Выбор врага в списке ---
+        //Выбор врага в списке
 
         private void EnemiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -159,7 +159,7 @@ namespace EnemyEditor
             }
         }
 
-        // --- Вспомогательные ---
+        //Вспомогательные
 
         private void UpdateEnemiesListBox()
         {
