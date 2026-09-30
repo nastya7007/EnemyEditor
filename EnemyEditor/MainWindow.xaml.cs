@@ -1,18 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 
 namespace EnemyEditor
 {
     public partial class MainWindow : Window
     {
         CEnemyTemplateList enemyList;
+        List<EnemyIcon> enemyIcons = new List<EnemyIcon>();
 
         public MainWindow()
         {
             InitializeComponent();
             enemyList = new CEnemyTemplateList();
         }
+
+        // --- Add / Remove ---
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
@@ -47,6 +53,8 @@ namespace EnemyEditor
             }
         }
 
+        // --- Save / Load (заглушки) ---
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             // позже
@@ -57,15 +65,44 @@ namespace EnemyEditor
             // позже
         }
 
+        // --- Иконки ---
+
         private void LoadIconsButton_Click(object sender, RoutedEventArgs e)
         {
-            // позже
+            OpenFolderDialog dialog = new OpenFolderDialog();
+            dialog.Title = "Выберите папку с иконками";
+
+            if (dialog.ShowDialog() == true)
+            {
+                LoadIconsFromFolder(dialog.FolderName);
+                MessageBox.Show("Загружено иконок: " + enemyIcons.Count);
+            }
+        }
+
+        private void LoadIconsFromFolder(string path)
+        {
+            enemyIcons.Clear();
+
+            // SearchOption.AllDirectories — искать .png и в подпапках
+            string[] files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
+
+            foreach (string file in files)
+            {
+                EnemyIcon icon = new EnemyIcon
+                {
+                    Name = System.IO.Path.GetFileName(file),
+                    ImagePath = file
+                };
+                enemyIcons.Add(icon);
+            }
         }
 
         private void IconsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // позже
         }
+
+        // --- Вспомогательные ---
 
         private void UpdateEnemiesListBox()
         {
